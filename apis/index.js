@@ -18,3 +18,13 @@ export function apiGetRecommendSongs(data) {
     authType: "None",
   });
 }
+
+// 获取新碟
+export function apiGetTopAlbum(data) {
+	return request.request({
+		url: '/album/newest',
+		method: 'GET',
+		data,
+		authType: 'None'
+	})
+}

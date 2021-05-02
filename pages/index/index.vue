@@ -1,23 +1,25 @@
 <template>
   <view class="content">
-    <!-- 轮播图 -->
-    <swiper class="swiper" :autoplay="true" :indicator-dots="true" indicator-active-color="#ff372b"
-      indicator-color="rgba(255,255,255, .5)" duration="500" :circular="true">
-      <swiper-item v-for="(item,index) in swiper" :key="index">
-        <view class="item">
-          <image :src="item.imageUrl" class="img"></image>
-          <view class="tag">
-            {{item.typeTitle}}
+    <view class="banner">
+      <!-- 轮播图 -->
+      <swiper class="swiper" :autoplay="true" :indicator-dots="true" indicator-active-color="#ff372b"
+        indicator-color="rgba(255,255,255, .5)" duration="500" :circular="true">
+        <swiper-item v-for="(item, index) in swiper" :key="index">
+          <view class="item">
+            <image :src="item.imageUrl" class="img"></image>
+            <view class="tag">
+              {{ item.typeTitle }}
+            </view>
           </view>
-        </view>
-      </swiper-item>
-    </swiper>
+        </swiper-item>
+      </swiper>
+    </view>
     <!-- 主入口搭建 -->
     <view class="main-bar flex-box">
-      <view class="flex-item" v-for="(item,index) in contentBar" :key="index">
+      <view class="flex-item" v-for="(item, index) in contentBar" :key="index">
         <image :src="'/static/image/index/t_' + (index + 1) + '.png'" class="img"></image>
         <view>
-          {{item.name}}
+          {{ item.name }}
         </view>
         <!--  //每日推荐对应的日期,v-if="index == 0" 列表索引的第一个item才生效 -->
         <!-- <view v-if="index===0" class="date">{{curDate}}</view> -->
@@ -29,15 +31,37 @@
     <view class="song-list">
       <view class="tit-bar">
         推荐歌单2
-        <view class="more fr">
-          歌单广场
-        </view>
+        <view class="more fr"> 歌单广场 </view>
       </view>
       <scroll-view class="scroll-view" scroll-x="">
-        <view class="item" v-for="(item,index) in recommendSongs" :key="index">
+        <view class="item" v-for="(item, index) in recommendSongs" :key="index">
           <image class="img" :src="item.picUrl"></image>
           <view class="desc ellipsis">{{ item.name }}</view>
           <view class="count"> {{ item.playCount }}</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- tab切换数据 -->
+    <view class="song-list">
+      <view class="switch-line flex-box">
+        <view class="flex-box">
+          <view class="switch-item" :class="{ on: newType === 0 }" @click="switchTab(0)">新碟</view>
+          <view class="switch-item" :class="{ on: newType === 1 }" @click="switchTab(1)">新歌</view>
+        </view>
+        <template v-if="newType === 0">
+          <view class="more">更多新碟</view>
+        </template>
+        <template v-if="newType === 1">
+          <view class="more">更多新歌</view>
+        </template>
+      </view>
+
+      <scroll-view class="scroll-view" scroll-x>
+        <view class="item" v-for="(item, index) in latestAlbum" :key="index">
+          <image class="img" :src="item.picUrl"></image>
+          <view class="desc ellipsis">{{ item.name }}</view>
+          <view class="desc ellipsis c9">{{ item.artist.name }}</view>
         </view>
       </scroll-view>
     </view>
@@ -47,72 +71,91 @@
 <script>
   import {
     apiGetBanner,
-    apiGetRecommendSongs
-  } from '../../apis/index'
-  import songList from '../../components/songList'
+    apiGetRecommendSongs,
+    apiGetTopAlbum,
+  } from "../../apis/index";
+  import songList from "../../components/songList";
   export default {
     components: {
       songList,
     },
     data() {
       return {
+        newType: 0,
         swiper: [],
+        latestAlbum: [],
         recommendSongs: [],
         loading: false,
         contentBar: [{
-            name: "每日推荐"
+            name: "每日推荐",
           },
           {
-            name: "歌单"
+            name: "歌单",
           },
           {
-            name: "排行榜"
+            name: "排行榜",
           },
           {
-            name: "电台"
+            name: "电台",
           },
           {
-            name: "直播"
-          }
-        ]
-      }
+            name: "直播",
+          },
+        ],
+      };
     },
     onLoad() {
-      this.loading = true
-      this.getBanners()
-      this.getRecommendSongs()
+      this.loading = true;
+      this.getBanners();
+      this.getRecommendSongs();
+      this.apiGetTopAlbum();
     },
     methods: {
       getBanners() {
-        apiGetBanner().then(res => {
-          this.swiper = res.banners
-        })
+        apiGetBanner().then((res) => {
+          this.swiper = res.banners;
+        });
       },
       getRecommendSongs() {
         const params = {
-          limit: 6
-        }
-        apiGetRecommendSongs(params).then(res => {
+          limit: 6,
+        };
+        apiGetRecommendSongs(params).then((res) => {
           // 格式化播放量数据
-          const formatCount = data => {
-            let tempNum = data
+          const formatCount = (data) => {
+            let tempNum = data;
             if (data > 100000) {
-              tempNum = (parseInt(data / 10000) + '万')
+              tempNum = parseInt(data / 10000) + "万";
             }
-            return tempNum
-          }
-          this.recommendSongs = res.result
-          this.recommendSongs.forEach(item => {
-            item.playCount = formatCount(item.playCount)
-          })
-          console.log(this.recommendSongs)
-        })
-      }
-    }
-  }
+            return tempNum;
+          };
+          this.recommendSongs = res.result;
+          this.recommendSongs.forEach((item) => {
+            item.playCount = formatCount(item.playCount);
+          });
+          console.log(this.recommendSongs);
+        });
+      },
+      switchTab(type) {
+        this.newType = type;
+        const temp = {
+          s: type == 1 ? 0 : 3,
+          e: type == 1 ? 3 : 6,
+        };
+        this.latestAlbum = this.latestTempAlbum.slice(temp.s, temp.e);
+      },
+      apiGetTopAlbum() {
+        apiGetTopAlbum().then((res) => {
+          this.latestTempAlbum = res.albums;
+          this.latestAlbum = res.albums.slice(0, 3);
+        });
+      },
+    },
+  };
 </script>
 
 <style lang="scss">
+  /* #endif */
   /* 宽度100% */
   .swiper .img {
     width: 750rpx;
@@ -161,6 +204,7 @@
     .switch-line {
       justify-content: space-between;
       color: #999;
+      align-items: center;
 
       .flex-box {
         line-height: 110rpx;
@@ -206,7 +250,9 @@
         width: 100%;
         height: 40rpx;
         z-index: 2;
-        background-image: linear-gradient(180deg, rgba(0, 0, 0, .2), transparent);
+        background-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.2),
+            transparent);
       }
 
       &.video {
@@ -236,5 +282,12 @@
       background-size: 25rpx 25rpx;
       transform: scale(0.8);
     }
+  }
+
+  /*
+  *平台差异化处理的代码可以放在底部，这样有利于集中管理 */
+  /* #ifdef MP-WEIXIN */
+  .banner {
+    margin-top: 60rpx;
   }
 </style>

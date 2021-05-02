@@ -38,7 +38,8 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "网易云",
     "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "backgroundColor": "#F8F8F8",
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "color": "#888",
