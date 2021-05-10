@@ -28,3 +28,12 @@ export function apiGetTopAlbum(data) {
 		authType: 'None'
 	})
 }
+
+export function apiGetRelatedVideo(data) {
+	return request.request({
+		url: '/related/allvideo',
+		method: 'GET',
+		data,
+		authType: 'None'
+	})
+}

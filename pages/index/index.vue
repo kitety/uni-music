@@ -155,7 +155,6 @@
 </script>
 
 <style lang="scss">
-  /* #endif */
   /* 宽度100% */
   .swiper .img {
     width: 750rpx;
@@ -290,4 +289,6 @@
   .banner {
     margin-top: 60rpx;
   }
+
+  /* #endif */
 </style>
