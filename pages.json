@@ -12,13 +12,22 @@
     {
       "path": "pages/video/video",
       "style": {
-        "navigationBarTitleText": "视频"
+        "navigationBarTitleText": "视频",
+        "app-plus": {
+          "titleNView": false, //去掉页面的导航栏
+          "bounce": "none", //取消ios回弹，避免和下拉刷新冲突
+          "disableScroll": true //避免安卓小程序卡顿
+        }
       }
     },
     {
       "path": "pages/mine/mine",
       "style": {
-        "navigationBarTitleText": "我的"
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false
+        }
       }
     },
     {

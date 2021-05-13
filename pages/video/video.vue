@@ -104,16 +104,9 @@
     methods: {
       // 获取导航
       getNavList() {
-        const params = {
-          id: 124,
-        }
-        apiGetNavList(params).then(res => {
-          this.navList = res.mock.navList
-
-          this.curNav = this.navList[0].id
-
-          this.switchNav(this.curNav, 0)
-        })
+      
+        this.curNav = this.navList[0].id
+        this.switchNav(this.curNav, 0)
 
       },
       // 导航切换

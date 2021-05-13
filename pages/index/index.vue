@@ -153,21 +153,57 @@
     },
   };
 </script>
-
 <style lang="scss">
-  /* 宽度100% */
-  .swiper .img {
-    width: 750rpx;
+  page {
+    color: #1a1a1a;
+    font-size: 24rpx;
   }
 
-  /* 导航 */
+  .banner {
+    width: 100%;
+    height: 268rpx;
+    margin: 30rpx auto 44rpx;
+
+    .swiper {
+      height: 268rpx;
+    }
+
+    .item {
+      position: relative;
+      display: block;
+      width: 686rpx;
+      height: 268rpx;
+      margin: 0 auto;
+      border-radius: 14rpx;
+      overflow: hidden;
+    }
+
+    .img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tag {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 34rpx;
+      padding: 0 14rpx;
+      line-height: 34rpx;
+      color: #fff;
+      background: #43a5f0;
+      z-index: 10;
+      border-top-left-radius: 14rpx;
+    }
+  }
+
   .main-bar {
     padding-bottom: 22rpx;
     text-align: center;
     line-height: 70rpx;
     color: #666;
     border-bottom: 1rpx solid #e6e6e6;
-    margin-top: 28rpx;
 
     .img {
       display: block;
@@ -175,6 +211,21 @@
       height: 92rpx;
       margin: 0 auto;
     }
+
+    .flex-item {
+      position: relative;
+
+      .date {
+        position: absolute;
+        left: 60rpx;
+        top: 40rpx;
+        line-height: 1;
+        font-size: 24rpx;
+        color: #ff392d;
+        transform: scale(0.8);
+      }
+    }
+
   }
 
   .song-list {
@@ -203,7 +254,6 @@
     .switch-line {
       justify-content: space-between;
       color: #999;
-      align-items: center;
 
       .flex-box {
         line-height: 110rpx;
@@ -249,9 +299,7 @@
         width: 100%;
         height: 40rpx;
         z-index: 2;
-        background-image: linear-gradient(180deg,
-            rgba(0, 0, 0, 0.2),
-            transparent);
+        background-image: linear-gradient(180deg, rgba(0, 0, 0, .2), transparent);
       }
 
       &.video {
@@ -283,8 +331,41 @@
     }
   }
 
+  .video-list {
+    padding-left: 0;
+
+    .tit-bar {
+      padding-left: 32rpx;
+    }
+
+    .video-item {
+      width: 686rpx;
+      height: 490rpx;
+      margin: 0 auto;
+      background: #f8f8f8;
+      border-radius: 10rpx;
+      overflow: hidden;
+      margin-bottom: 24rpx;
+    }
+
+    .img {
+      display: block;
+      width: 686rpx;
+      height: 390rpx;
+      background: #eee;
+    }
+
+    .desc {
+      padding-left: 40rpx;
+      font-size: 30rpx;
+      font-weight: 600;
+      line-height: 100rpx;
+    }
+  }
+
   /*
-  *平台差异化处理的代码可以放在底部，这样有利于集中管理 */
+	 *平台差异化处理的代码可以放在底部，这样有利于集中管理
+	*/
   /* #ifdef MP-WEIXIN */
   .banner {
     margin-top: 60rpx;
